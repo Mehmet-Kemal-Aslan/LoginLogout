@@ -1,9 +1,11 @@
 ﻿using LoginLogout.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using LoginLogout.Filter;
 
 namespace LoginLogout.Controllers
 {
+    [UserFilter]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

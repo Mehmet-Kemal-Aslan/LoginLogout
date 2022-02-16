@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using LoginLogout.Models;
-
+using Microsoft.AspNetCore.Http;
+using LoginLogout.Filter;
 
 namespace LoginLogout.Controllers
 {
@@ -17,11 +18,31 @@ namespace LoginLogout.Controllers
         }
         public IActionResult Index()
         {
+            if (HttpContext.Session.GetInt32("id").HasValue)
+            {
+                return Redirect("/Home/Index");
+            }
             return View();
+        }
+
+        public IActionResult Login(string Email, string Password)
+        {
+            var User = _context.Users.FirstOrDefault(x => x.Email == Email && x.Password == Password);
+            if (User != null)
+            {
+                HttpContext.Session.SetInt32("id", User.Id);
+                HttpContext.Session.SetString("fullname", User.Name + " " + User.Surname);
+                return Redirect("/Home/Index");
+            }
+            return Redirect("Index");
         }
 
         public IActionResult SignUp()
         {
+            if (HttpContext.Session.GetInt32("id").HasValue)
+            {
+                return Redirect("/Home/Index");
+            }
             return View();
         }
 
@@ -37,6 +58,12 @@ namespace LoginLogout.Controllers
             }
             await _context.SaveChangesAsync();
 
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
             return RedirectToAction(nameof(Index));
         }
     }

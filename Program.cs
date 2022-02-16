@@ -8,6 +8,7 @@ var connectionString = builder.Configuration.GetConnectionString("LogDb");
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DataContext>(options =>
 options.UseSqlServer(connectionString));
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -25,6 +26,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
+
 
 app.MapControllerRoute(
     name: "default",
