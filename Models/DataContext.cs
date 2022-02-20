@@ -6,5 +6,6 @@ namespace LoginLogout.Models
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         public DbSet<Users> Users { get; set; }
+        public DbSet<PasswordCode> PasswordCode { get; set; }
     }
 }

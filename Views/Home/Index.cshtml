@@ -1,10 +1,41 @@
 ﻿@using Microsoft.AspNetCore.Http;
+@model IEnumerable<LoginLogout.Models.Users>
 
 @{
     ViewData["Title"] = "Home Page";
     string? fullname = Context.Session.GetString("fullname");
+    int? role = Context.Session.GetInt32("role");
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome @fullname</h1>
 </div>
+
+@if(role == Convert.ToInt32(LoginLogout.Enums.EnUser.Admin))
+{
+    <table class="table table-striped table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Name</th>
+          <th scope="col">Surname</th>
+          <th scope="col">Surname</th>
+          <th scope="col">Email</th>
+          <th scope="col">Password</th>
+        </tr>
+      </thead>
+      <tbody>
+          @foreach(var item in Model)
+          {
+              <tr>
+                <th scope="row">@item.Id</th>
+                <td>@item.Name</td>
+                <td>@item.Surname</td>
+                <td>@item.UserName</td>
+                <td>@item.Email</td>
+                <td>@item.Password</td>
+              </tr>
+          }
+      </tbody>
+    </table>
+}

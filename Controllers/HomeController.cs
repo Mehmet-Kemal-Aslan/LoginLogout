@@ -9,15 +9,19 @@ namespace LoginLogout.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly DataContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(ILogger<HomeController> logger, DataContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            List<Users> list = _context.Users.ToList();
+            return View(list);
         }
 
         public IActionResult Privacy()
